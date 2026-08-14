@@ -1,12 +1,125 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Volleyball Turnier</title>
-  </head>
-  <body style="margin:0;">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Volleyball Turnier</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">TURNIERLEITUNG</p>
+        <h1>Volleyball Turnier</h1>
+        <p class="subtitle">10 Teams · flexible Vorrunde · 1 Satz pro Spiel</p>
+      </div>
+      <div class="hero-badge" id="modeBadge">3 Spiele / Team</div>
+    </header>
+
+    <nav class="tabs" aria-label="Turnierbereiche">
+      <button class="tab active" data-tab="teams">Teams & Modus</button>
+      <button class="tab" data-tab="schedule">Spielplan</button>
+      <button class="tab" data-tab="standings">Tabelle</button>
+    </nav>
+
+    <section class="panel active" id="tab-teams">
+      <div class="panel-head">
+        <div>
+          <h2>Teams & Vorrunde</h2>
+          <p>Teamnamen eingeben und Anzahl der Vorrundenspiele festlegen.</p>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <label for="gamesPerTeam">Spiele pro Team in der Vorrunde</label>
+        <div class="setting-row">
+          <select id="gamesPerTeam">
+            <option value="1">1 Spiel</option>
+            <option value="2">2 Spiele</option>
+            <option value="3" selected>3 Spiele</option>
+            <option value="4">4 Spiele</option>
+            <option value="5">5 Spiele</option>
+            <option value="6">6 Spiele</option>
+            <option value="7">7 Spiele</option>
+            <option value="8">8 Spiele</option>
+            <option value="9">9 Spiele (Jeder gegen jeden)</option>
+          </select>
+          <span class="mode-note">1 Satz · keine Unentschieden</span>
+        </div>
+        <p class="helper">Bei 3 Spielen entstehen 3 Runden mit je 5 Spielen, also 15 Vorrundenspiele insgesamt.</p>
+      </div>
+
+      <div class="team-grid" id="teamGrid"></div>
+
+      <div class="actions">
+        <button class="primary" id="createScheduleBtn">Spielplan erstellen</button>
+        <button class="secondary" id="resetBtn">Turnier zurücksetzen</button>
+      </div>
+    </section>
+
+    <section class="panel" id="tab-schedule">
+      <div class="panel-head">
+        <div>
+          <h2>Spielplan & Ergebnisse</h2>
+          <p>Ergebnisse direkt eintragen. Nur vollständige, unentschiedene Ergebnisse werden gewertet.</p>
+        </div>
+        <div class="progress" id="progressText">0 / 15 gespielt</div>
+      </div>
+      <div id="scheduleEmpty" class="empty-state">
+        <h3>Noch kein Spielplan</h3>
+        <p>Lege zuerst die Teams fest und erstelle danach den Spielplan.</p>
+        <button class="primary small" data-go="teams">Zu Teams & Modus</button>
+      </div>
+      <div id="scheduleRounds"></div>
+    </section>
+
+    <section class="panel" id="tab-standings">
+      <div class="panel-head standings-head">
+        <div>
+          <h2>Zwischenstand</h2>
+          <p>Reihung: Siege → Punktedifferenz → erzielte Punkte.</p>
+        </div>
+        <div class="legend">
+          <span><i class="dot top"></i> Top 4</span>
+          <span><i class="dot bottom"></i> Bottom 2</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Team</th>
+              <th>Sp.</th>
+              <th>S</th>
+              <th>N</th>
+              <th>P+</th>
+              <th>P−</th>
+              <th>Diff.</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="standingsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="qualification-grid">
+        <div class="qualification-card top-card">
+          <span class="qualification-label">Top 4</span>
+          <div id="topFour" class="qualification-list"></div>
+        </div>
+        <div class="qualification-card bottom-card">
+          <span class="qualification-label">Bottom 2</span>
+          <div id="bottomTwo" class="qualification-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
 </html>
